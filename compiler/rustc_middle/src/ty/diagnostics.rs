@@ -204,6 +204,7 @@ pub fn suggest_constraining_type_param(
 }
 
 /// Suggest restricting a type param with a new bound.
+#[instrument(level = "debug", skip(tcx, param_names_and_constraints))]
 pub fn suggest_constraining_type_params<'a>(
     tcx: TyCtxt<'_>,
     generics: &hir::Generics<'_>,
@@ -212,6 +213,7 @@ pub fn suggest_constraining_type_params<'a>(
 ) -> bool {
     let mut grouped = FxHashMap::default();
     param_names_and_constraints.for_each(|(param_name, constraint, def_id)| {
+        debug!("param_name = {param_name}, constraint = {constraint}, def_id = {def_id:?}");
         grouped.entry(param_name).or_insert(Vec::new()).push((constraint, def_id))
     });
 

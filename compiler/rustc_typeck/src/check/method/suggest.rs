@@ -88,6 +88,7 @@ impl<'a, 'tcx> FnCtxt<'a, 'tcx> {
         self.autoderef(span, ty).any(|(ty, _)| matches!(ty.kind(), ty::Slice(..) | ty::Array(..)))
     }
 
+    #[instrument(level = "debug", skip(self))]
     pub fn report_method_error(
         &self,
         mut span: Span,
@@ -1827,6 +1828,7 @@ impl<'a, 'tcx> FnCtxt<'a, 'tcx> {
         }
     }
 
+    #[instrument(level = "debug", skip(self, err))]
     fn suggest_traits_to_import(
         &self,
         err: &mut Diagnostic,
