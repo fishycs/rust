@@ -119,6 +119,7 @@ pub fn find_best_match_for_name(
 }
 
 #[cold]
+#[tracing::instrument(level = "trace")]
 fn find_best_match_for_name_impl(
     use_substring_score: bool,
     candidates: &[Symbol],

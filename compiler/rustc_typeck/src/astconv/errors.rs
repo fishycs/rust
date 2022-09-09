@@ -126,6 +126,7 @@ impl<'o, 'tcx> dyn AstConv<'tcx> + 'o {
         }
     }
 
+    #[instrument(level = "trace", skip(self, all_candidates))]
     pub(crate) fn complain_about_assoc_type_not_found<I>(
         &self,
         all_candidates: impl Fn() -> I,
@@ -172,6 +173,7 @@ impl<'o, 'tcx> dyn AstConv<'tcx> + 'o {
         // the supertraits), like in ItemCtxt, then look more generally from
         // all visible traits. If there's one clear winner, just suggest that.
 
+        debug!("we got to visible_traits");
         let visible_traits: Vec<_> = self
             .tcx()
             .all_traits()
@@ -195,10 +197,14 @@ impl<'o, 'tcx> dyn AstConv<'tcx> + 'o {
             )
             .collect();
 
+        debug!("visible_traits = {visible_traits:?}");
+        debug!("wider_candidate_names = {wider_candidate_names:?}");
+
         if let (Some(suggested_name), true) = (
             find_best_match_for_name(&wider_candidate_names, assoc_name.name, None),
             assoc_name.span != DUMMY_SP,
         ) {
+            debug!("we've found a good match: {suggested_name}");
             if let [best_trait] = visible_traits
                 .iter()
                 .filter(|trait_def_id| {

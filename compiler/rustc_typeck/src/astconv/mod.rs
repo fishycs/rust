@@ -1613,6 +1613,7 @@ impl<'o, 'tcx> dyn AstConv<'tcx> + 'o {
     // given by `assoc_name`. `ty_param_def_id` is the `DefId` of the type parameter
     // This function will fail if there are no suitable bounds or there is
     // any ambiguity.
+    #[instrument(level = "trace", skip(self))]
     fn find_bound_for_assoc_item(
         &self,
         ty_param_def_id: LocalDefId,
@@ -1652,6 +1653,7 @@ impl<'o, 'tcx> dyn AstConv<'tcx> + 'o {
 
     // Checks that `bounds` contains exactly one element and reports appropriate
     // errors otherwise.
+    #[instrument(level = "trace", skip(self, all_candidates, ty_param_name, is_equality))]
     fn one_bound_for_assoc_type<I>(
         &self,
         all_candidates: impl Fn() -> I,
@@ -1780,6 +1782,7 @@ impl<'o, 'tcx> dyn AstConv<'tcx> + 'o {
     // parameter or `Self`.
     // NOTE: When this function starts resolving `Trait::AssocTy` successfully
     // it should also start reporting the `BARE_TRAIT_OBJECTS` lint.
+    #[instrument(level = "trace", skip(self))]
     pub fn associated_path_to_ty(
         &self,
         hir_ref_id: hir::HirId,

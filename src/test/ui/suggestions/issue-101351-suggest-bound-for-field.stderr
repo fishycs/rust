@@ -1,0 +1,9 @@
+error[E0220]: associated type `Associated` not found for `T`
+  --> $DIR/issue-101351-suggest-bound-for-field.rs:9:15
+   |
+LL |     field: T::Associated,
+   |               ^^^^^^^^^^ there is a similarly named associated type `Associated` in the trait `Foo`
+
+error: aborting due to previous error
+
+For more information about this error, try `rustc --explain E0220`.
